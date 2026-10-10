@@ -1,0 +1,6 @@
+{
+  "name": "Jalan Typing Examination System",
+  "description": "Professional 10+ minute typing examination and practice platform for students with backspace restrictions, real-time WPM statistics, and anti-cheating controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
