@@ -1403,13 +1403,20 @@ export const ZeroBackspaceNotepad: React.FC = () => {
                     setSelectedPassageId(e.target.value);
                     handleResetTest();
                   }}
-                  className="appearance-none bg-slate-50 border border-slate-300 text-slate-800 text-xs font-semibold rounded-xl px-3 py-2 pr-8 outline-none focus:ring-2 focus:ring-blue-500 max-w-[220px] truncate cursor-pointer"
+                  className="appearance-none bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs font-semibold rounded-xl px-3 py-2 pr-8 outline-none focus:ring-2 focus:ring-blue-500 max-w-[240px] sm:max-w-[300px] md:max-w-[360px] truncate cursor-pointer shadow-xs transition"
                 >
                   <optgroup label="Custom Input / OCR Scan">
                     <option value="custom">✏️ Enter Custom Test Text / Photo OCR...</option>
                   </optgroup>
-                  <optgroup label="Official Hindi/English Passages">
-                    {availablePassages.map((p) => (
+                  <optgroup label="⭐ Newly Added Exam Passages (Top Priority)">
+                    {availablePassages.filter(p => !p.id.startsWith('passage-easy') && !p.id.startsWith('passage-med') && !p.id.startsWith('passage-hard')).map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.title} ({p.wordCount || p.content.split(/\s+/).filter(Boolean).length} words)
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Standard Practice Passages (Previous)">
+                    {availablePassages.filter(p => p.id.startsWith('passage-easy') || p.id.startsWith('passage-med') || p.id.startsWith('passage-hard')).map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.title} ({p.wordCount || p.content.split(/\s+/).filter(Boolean).length} words)
                       </option>
@@ -1419,16 +1426,6 @@ export const ZeroBackspaceNotepad: React.FC = () => {
                 <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" />
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsPdfModalOpen(true)}
-                className="px-3 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
-                title="Upload PDF file to add paragraphs to passage catalog"
-              >
-                <Upload className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Add PDF Passages</span>
-                <span className="sm:hidden">PDF</span>
-              </button>
 
               <button
                 type="button"

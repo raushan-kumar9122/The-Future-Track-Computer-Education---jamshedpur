@@ -25,7 +25,15 @@ export function getPassages(): Passage[] {
     }
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed;
+      // Retain custom user-created passages (passages not in DEFAULT_PASSAGES)
+      const defaultIdSet = new Set(DEFAULT_PASSAGES.map((p) => p.id));
+      const customUserPassages = parsed.filter((p: Passage) => !defaultIdSet.has(p.id));
+
+      // Re-order so DEFAULT_PASSAGES (with latest requested paragraphs on top) take precedence,
+      // and any user-custom passages stay accessible
+      const merged = [...DEFAULT_PASSAGES, ...customUserPassages];
+      localStorage.setItem(STORAGE_KEYS.PASSAGES, JSON.stringify(merged));
+      return merged;
     }
     return DEFAULT_PASSAGES;
   } catch (e) {
